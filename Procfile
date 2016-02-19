@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -DPROD_MODE=true -DSKIP_CREATE_ES_DEV_NODE=true -jar build/libs/open.data.poitiers.bike.shelters-1.0-all.jar
+web: java $JAVA_OPTS -DPROD_MODE=true -jar build/libs/open.data.poitiers.bike.shelters-1.0-all.jar
