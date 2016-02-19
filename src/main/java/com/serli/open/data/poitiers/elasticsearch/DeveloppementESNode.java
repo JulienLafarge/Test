@@ -40,10 +40,9 @@ public class DeveloppementESNode {
         }
 
         Settings settings = ImmutableSettings.builder()
-                //.put("http.port", "9200")
-                //.put("network.host", "localhost")
-                .put("number_of_shards", 5)
-                .put("number_of_replicas", 1)
+                .put("http.port", "9200")
+                .put("network.host", "localhost")
+                .put("path.data", ES_LOCAL_DATA)
                 .build();
 
         Node node = NodeBuilder.nodeBuilder()
