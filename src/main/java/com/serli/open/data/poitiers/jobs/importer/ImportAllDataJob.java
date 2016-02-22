@@ -8,6 +8,7 @@ package com.serli.open.data.poitiers.jobs.importer;
 import com.serli.open.data.poitiers.api.v2.model.settings.DataSource;
 import com.serli.open.data.poitiers.api.v2.model.settings.Settings;
 import com.serli.open.data.poitiers.elasticsearch.ElasticUtils;
+import com.serli.open.data.poitiers.elasticsearch.RuntimeJestClient;
 import com.serli.open.data.poitiers.geolocation.Address;
 import com.serli.open.data.poitiers.geolocation.GeolocationAPIClient;
 import com.serli.open.data.poitiers.geolocation.LatLon;
@@ -35,25 +36,27 @@ public class ImportAllDataJob extends ImportDataJob<FullDataJsonFile> {
     }
     
     public static String elasticType;
-    //config file
-    public static String filename;
     
     @Override
     protected void indexRootElement(FullDataJsonFile fullDataJsonFile) {
+        
         DataJsonObject[] jsonDataFromFiles = fullDataJsonFile.data;
 
         Bulk.Builder bulk = new Bulk.Builder().defaultIndex(OPEN_DATA_POITIERS_INDEX).defaultType(getElasticType());
 
         Arrays.stream(jsonDataFromFiles)
                 .forEach(jsonFromFile -> bulk.addAction(getAction(jsonFromFile)));
+        RuntimeJestClient jc = ElasticUtils.createClient();
+        jc.execute(bulk.build());
         
-        ElasticUtils.createClient().execute(bulk.build());
+        
     }
 
     private Index getAction(DataJsonObject jsonDataFromFile) {
-        
+
         MappingClass mappingClass = new MappingClass(elasticType);
         
+
         for(Map.Entry<String, Object> entry : mappingClass.data.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
@@ -74,17 +77,14 @@ public class ImportAllDataJob extends ImportDataJob<FullDataJsonFile> {
                     mappingClass.data.put(key, property);
                 }
             }
+            
         }
-        
+          
         return new Index.Builder(mappingClass.data).build();
     }
 
     @Override
     protected String getElasticType() {
         return elasticType;
-    }
-    
-    private String getFilename() {
-        return filename;
     }
 }
