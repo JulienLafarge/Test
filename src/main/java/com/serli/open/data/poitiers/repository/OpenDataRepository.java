@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.serli.open.data.poitiers.api.v2.model.GeolocResult;
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -132,11 +133,9 @@ public class OpenDataRepository extends ElasticSearchRepository {
                 T result = gson.fromJson(jsonElement.getAsJsonObject().get("_source").getAsJsonObject(), clazz);
                 return result;
         }).collect(Collectors.toList());*/
-         SearchResult searchResult = performSearchOnType(query, elasticType);
-
-        return StreamSupport.stream(
-                Spliterators.spliteratorUnknownSize(searchResult.getHits(clazz).iterator(), Spliterator.ORDERED),
-                false).map(hitResult -> hitResult.source).collect(Collectors.toList());
+        
+        JestResult result = performSearchOnType(query, elasticType);
+        return result.getSourceAsObjectList(clazz);
     }
 
 
