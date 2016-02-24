@@ -18,10 +18,10 @@ import java.util.stream.StreamSupport;
  */
 public class OpenDataRepository extends ElasticSearchRepository {
 
-    /*public static final String BIKE_SHELTERS_TYPE = "bike-shelters";
+    public static final String BIKE_SHELTERS_TYPE = "bike-shelters";
     public static final String DISABLED_PARKINGS_TYPE = "disabled-parkings";
     public static final String GLASS_CONTAINERS_TYPE = "glass-containers";
-    public static final String DEFIBRILLATORS_TYPE = "defibrillators";*/
+    public static final String DEFIBRILLATORS_TYPE = "defibrillators";
 
     public static final OpenDataRepository INSTANCE = new OpenDataRepository();
     
@@ -122,7 +122,7 @@ public class OpenDataRepository extends ElasticSearchRepository {
                 "   \"size\": " + Integer.MAX_VALUE + "\n" +
                 "}";
         
-        /*SearchResult searchResult = performSearchOnType(query, elasticType);
+        SearchResult searchResult = performSearchOnType(query, elasticType);
         
         JsonObject jsonObject = searchResult.getJsonObject();
         JsonArray jsonHits = jsonObject.get("hits").getAsJsonObject().get("hits").getAsJsonArray();
@@ -132,10 +132,7 @@ public class OpenDataRepository extends ElasticSearchRepository {
         return StreamSupport.stream(jsonHits.spliterator(), false).map(jsonElement -> {
                 T result = gson.fromJson(jsonElement.getAsJsonObject().get("_source").getAsJsonObject(), clazz);
                 return result;
-        }).collect(Collectors.toList());*/
-        
-        JestResult result = performSearchOnType(query, elasticType);
-        return result.getSourceAsObjectList(clazz);
+        }).collect(Collectors.toList());
     }
 
 

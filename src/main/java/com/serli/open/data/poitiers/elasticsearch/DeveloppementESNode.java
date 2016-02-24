@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static com.serli.open.data.poitiers.jobs.JobRunner.run;
 import com.serli.open.data.poitiers.jobs.importer.ImportAllDataJob;
+import com.serli.open.data.poitiers.jobs.importer.ImportBikeSheltersDataJob;
 import com.serli.open.data.poitiers.repository.SettingsRepository;
 import java.util.Map.Entry;
 //import com.serli.open.data.poitiers.jobs.importer.ImportAnyDataJob;
@@ -61,6 +62,7 @@ public class DeveloppementESNode {
         // loading settings
         run(ReloadDefaultSettings.class);
 
+        run(ImportBikeSheltersDataJob.class);
         ImportAllDataJob.elasticType = "textile-spots";
         run(ImportAllDataJob.class);
     }
