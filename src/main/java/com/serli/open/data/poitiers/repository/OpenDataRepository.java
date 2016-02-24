@@ -123,16 +123,10 @@ public class OpenDataRepository extends ElasticSearchRepository {
                 "}";
         
         SearchResult searchResult = performSearchOnType(query, elasticType);
-        
-        JsonObject jsonObject = searchResult.getJsonObject();
-        JsonArray jsonHits = jsonObject.get("hits").getAsJsonObject().get("hits").getAsJsonArray();
-        
-        Gson gson = new Gson();
 
-        return StreamSupport.stream(jsonHits.spliterator(), false).map(jsonElement -> {
-                T result = gson.fromJson(jsonElement.getAsJsonObject().get("_source").getAsJsonObject(), clazz);
-                return result;
-        }).collect(Collectors.toList());
+        return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(searchResult.getHits(clazz).iterator(), Spliterator.ORDERED),
+                false).map(hitResult -> hitResult.source).collect(Collectors.toList());
     }
 
 
