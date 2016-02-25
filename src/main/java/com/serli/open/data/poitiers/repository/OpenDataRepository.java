@@ -119,7 +119,7 @@ public class OpenDataRepository extends ElasticSearchRepository {
                 "   \"query\": {\n" +
                 "       \"match_all\": {}\n" +
                 "   },\n" +
-                "   \"size\": " + Integer.MAX_VALUE + "\n" +
+                "   \"size\": " + 1000 + "\n" +
                 "}";
         
         JestResult searchResult = performSearchOnType(query, elasticType);
