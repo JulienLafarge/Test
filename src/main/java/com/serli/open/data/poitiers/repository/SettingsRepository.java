@@ -42,7 +42,7 @@ public class SettingsRepository extends ElasticSearchRepository {
     }
 
     public Settings getAllSettings() {
-        Get getQuery = new Get.Builder(OPEN_DATA_POITIERS_INDEX, SETTINGS_ID).type(SETTINGS_TYPE).id(SETTINGS_ID).build();
+        Get getQuery = new Get.Builder(OPEN_DATA_POITIERS_INDEX, SETTINGS_ID).type(SETTINGS_TYPE).build();
 
         DocumentResult result = client.execute(getQuery);
 
