@@ -87,7 +87,7 @@ public class OpenDataRepository extends ElasticSearchRepository {
                 "  ]\n" +
                 "}";
 
-        SearchResult searchResult = performSearchOnType(query, elasticType);
+        JestResult searchResult = performSearchOnType(query, elasticType);
         
         JsonObject jsonObject = searchResult.getJsonObject();
         JsonArray jsonHits = jsonObject.get("hits").getAsJsonObject().get("hits").getAsJsonArray();
@@ -122,11 +122,21 @@ public class OpenDataRepository extends ElasticSearchRepository {
                 "   \"size\": " + Integer.MAX_VALUE + "\n" +
                 "}";
         
-        SearchResult searchResult = performSearchOnType(query, elasticType);
+        JestResult searchResult = performSearchOnType(query, elasticType);
 
-        return StreamSupport.stream(
+        /*return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(searchResult.getHits(clazz).iterator(), Spliterator.ORDERED),
-                false).map(hitResult -> hitResult.source).collect(Collectors.toList());
+                false).map(hitResult -> hitResult.source).collect(Collectors.toList());*/
+        
+        JsonObject jsonObject = searchResult.getJsonObject();
+        JsonArray jsonHits = jsonObject.get("hits").getAsJsonObject().get("hits").getAsJsonArray();
+        
+        Gson gson = new Gson();
+
+        return StreamSupport.stream(jsonHits.spliterator(), false).map(jsonElement -> {
+                T result = gson.fromJson(jsonElement.getAsJsonObject().get("_source").getAsJsonObject(), clazz);
+                return result;
+        }).collect(Collectors.toList());
     }
 
 
@@ -138,7 +148,7 @@ public class OpenDataRepository extends ElasticSearchRepository {
         return MAPPING_CLASS;
     }
 
-    private SearchResult performSearchOnType(String query, String type) {
+    private JestResult performSearchOnType(String query, String type) {
         Search search = new Search.Builder(query)
                 .addIndex(OPEN_DATA_POITIERS_INDEX)
                 .addType(type)
