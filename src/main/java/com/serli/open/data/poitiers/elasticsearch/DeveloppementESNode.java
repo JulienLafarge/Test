@@ -61,8 +61,8 @@ public class DeveloppementESNode {
         
         // loading settings
         run(ReloadDefaultSettings.class);
-        System.out.println("settings reloaded");
-        run(ImportBikeSheltersDataJob.class);
+        //System.out.println("settings reloaded");
+        //run(ImportBikeSheltersDataJob.class);
         /*ImportAllDataJob.elasticType = "textile-spots";
         run(ImportAllDataJob.class);*/
     }
