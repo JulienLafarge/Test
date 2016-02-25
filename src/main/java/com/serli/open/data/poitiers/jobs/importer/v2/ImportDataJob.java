@@ -76,7 +76,7 @@ public abstract class ImportDataJob<T> implements Job {
         }
         
         createMapping(OPEN_DATA_POITIERS_INDEX, getElasticType(), null, getElasticSearchURL());
-        System.out.println("mapping created");
+
         try {
             InputStream requestInputStream = Request.Get(dataSource.openDataFileURL).execute().returnContent().asStream();
 
@@ -84,7 +84,7 @@ public abstract class ImportDataJob<T> implements Job {
             try(FileOutputStream tempFileOutputStream = new FileOutputStream(tempFile)){
                 IOUtils.copy(requestInputStream, tempFileOutputStream);
             }
-            System.out.println("url ok");
+
             tempFile.deleteOnExit();
             InputStream inputData = Files.newInputStream(tempFile.toPath());
             ObjectMapper objectMapper = new ObjectMapper();

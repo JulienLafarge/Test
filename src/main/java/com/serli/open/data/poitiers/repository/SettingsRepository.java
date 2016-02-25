@@ -36,9 +36,8 @@ public class SettingsRepository extends ElasticSearchRepository {
     }
 
     public void updateSettings(Settings settings){
-        //Index indexQuery = new Index.Builder(settings).index(OPEN_DATA_POITIERS_INDEX).type(SETTINGS_TYPE).id(SETTINGS_ID).build();
-        Index indexQuery = new Index.Builder(settings).index(OPEN_DATA_POITIERS_INDEX).type(SETTINGS_TYPE).build();
-
+        Index indexQuery = new Index.Builder(settings).index(OPEN_DATA_POITIERS_INDEX).type(SETTINGS_TYPE).id(SETTINGS_ID).build();
+        
         client.execute(indexQuery);
     }
 
