@@ -6,6 +6,7 @@
 package com.serli.open.data.poitiers.jobs.importer;
 
 
+import com.serli.open.data.poitiers.jobs.importer.v2.ImportAllDataJob;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.google.gson.JsonArray;
